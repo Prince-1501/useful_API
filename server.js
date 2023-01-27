@@ -1,10 +1,12 @@
 const express = require('express');
 const qrcode = require('qrcode');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors());
 
 app.get('/', (req, res) => {
     res.send("Welcome to QR Code API. Please hit the endpoint /qr-code/:url with a valid URL to generate QR code.");
