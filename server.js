@@ -13,8 +13,9 @@ app.get('/', (req, res) => {
 app.get('/qr-code/:url', async (req, res) => {
     try {
         const url = req.params.url;
-        const qr_code = await qrcode.toDataURL(url);
+        const qr_code = await qrcode.toDataURL(url,{ width: 500, color: { dark: '#0373c6', light: '#ffffff' } });
         res.setHeader('Content-Type', 'image/png');
+        console.log(`QR code generated for ${url}`);
         res.send(Buffer.from(qr_code.split(',')[1], 'base64'));
     }catch (err) {
         console.log(err);
