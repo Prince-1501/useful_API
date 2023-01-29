@@ -5,6 +5,7 @@ import './styles/main.css'
 function App() {
   const [url, setUrl] = useState('');
   const [qrCode, setQrCode] = useState('');
+  const [quote, setQuote] = useState({});
 
   const [image, setImage] = useState(null);
   const [className, setClassName] = useState('');
@@ -40,6 +41,16 @@ function App() {
     }
   }
 
+  const handleQuoteSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.get('https://url-to-qr.onrender.com/quote');
+      setQuote(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleChange = (event) => {
     setUrl(event.target.value);
   }
@@ -67,7 +78,7 @@ function App() {
         {qrCode && <img src={qrCode} alt="QR Code" />}
       </div>
 
-    <h1 className="heading">Image Recognition</h1>
+      <h1 className="heading">Image Recognition</h1>
       <form onSubmit={handleImageSubmit} className='form'>
         <input type="file" onChange={handleImageChange} accept="image/*" className='input'/>
         <button type="submit" className='button'>Recognize</button>
@@ -79,6 +90,15 @@ function App() {
         {image && <img src={URL.createObjectURL(image)} alt="Selected Image" />}
       </div>
 
+      <h1 className="heading">Random Quote Generator</h1>
+      <form onSubmit={handleQuoteSubmit} className='form'>
+        <button type="submit" className='button'>Generate Quote</button>
+      </form>
+
+      <div className="quote-container">
+        {quote.content && <p className="quote-content">"{quote.content}"</p>}
+        {quote.author && <p className="quote-author">- {quote.author}</p>}
+      </div>
 
     </div>
 
